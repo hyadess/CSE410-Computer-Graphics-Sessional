@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #include "PointClass.hpp"
+
 class Matrix
 {
 public:
@@ -15,7 +16,7 @@ public:
             for (int j = 0; j < 4; j++)
             {
                 this->arr[i][j] = 0;
-                if (i == j && i != 3)
+                if (i == j)
                 {
                     arr[i][j] = 1;
                 }
@@ -47,7 +48,7 @@ public:
                 }
             }
         }
-        Matrix newMatrix=Matrix(result);
+        Matrix newMatrix = Matrix(result);
         return newMatrix;
     }
 
@@ -71,7 +72,23 @@ public:
 
         Point newP = Point(resultPoint[0], resultPoint[1], resultPoint[2]);
         newP.setScale(resultPoint[3]);
+        if (resultPoint[3] != 1)
+            cout << resultPoint[3] << endl;
         return newP;
+    }
+
+    void print()
+    {
+        cout << std::fixed << std::setprecision(7);
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                std::cout << arr[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        cout << endl;
     }
 };
 

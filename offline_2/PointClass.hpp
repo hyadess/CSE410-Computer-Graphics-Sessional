@@ -33,7 +33,9 @@ public:
     }
     void setScale(double scale)
     {
-        this->scale = scale;
+        x=x/scale;
+        y=y/scale;
+        z=z/scale;
     }
 
     double dotProduct(Point q)
