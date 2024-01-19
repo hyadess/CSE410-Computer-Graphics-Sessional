@@ -14,7 +14,7 @@ using namespace std;
 int main()
 {
     /// STAGE 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    ifstream fin("./spec/IOs/1/scene.txt");
+    ifstream fin("./spec/IOs/5/scene.txt");
     ofstream fout("./outputs/stage1.txt");
 
     Point eye, look, up;
@@ -156,7 +156,7 @@ int main()
 
     fin.open("./outputs/stage3.txt");
     fout.open("./outputs/z_buffer.txt");
-    ifstream fin2("./spec/IOs/1/config.txt");
+    ifstream fin2("./spec/IOs/5/config.txt");
     int screen_width, screen_height;
     fin2 >> screen_width >> screen_height;
     double box_left = -1, box_right = 1, box_bottom = -1, box_top = 1;
