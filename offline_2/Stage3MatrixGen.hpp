@@ -2,7 +2,7 @@
 #define STAGE3
 
 
-#include "MatrixClass.cpp"
+#include "MatrixClass.hpp"
 
 Matrix projectionTransform(double fovY,double ratio,double near,double far)
 {

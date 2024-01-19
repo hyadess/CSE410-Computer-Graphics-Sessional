@@ -3,53 +3,88 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "MatrixClass.cpp"
-#include "PointClass.cpp"
+#include "MatrixClass.hpp"
+#include "PointClass.hpp"
 
 // for rotation matrix generation........................
 
 // for converting i,j,k into c1,c2,c3.........................
-Matrix rodriguezMatrixGen(Point a, double angle)
+// Matrix rodriguezMatrixGen(Point a, double angle)
+// {
+//     a.normalize();
+//     double arr[4][4];
+//     double c = cosf64(angle * M_PI / 180.0);
+//     double s = sinf64(angle * M_PI / 180.0);
+
+//     arr[0][0] = c + a.x * a.x * (1 - c);
+//     arr[0][1] = a.x * a.y * (1 - c) - a.z * s;
+//     arr[0][2] = a.x * a.z * (1 - c) + a.y * s;
+//     arr[0][3] = 0.0;
+
+//     arr[1][0] = a.y * a.x * (1 - c) + a.z * s;
+//     arr[1][1] = c + a.y * a.y * (1 - c);
+//     arr[1][2] = a.y * a.z * (1 - c) - a.x * s;
+//     arr[1][3] = 0.0;
+
+//     arr[2][0] = a.z * a.x * (1 - c) - a.y * s;
+//     arr[2][1] = a.z * a.y * (1 - c) + a.x * s;
+//     arr[2][2] = c + a.z * a.z * (1 - c);
+//     arr[2][3] = 0.0;
+
+//     arr[3][0] = 0.0;
+//     arr[3][1] = 0.0;
+//     arr[3][2] = 0.0;
+//     arr[3][3] = 1.0;
+
+//     Matrix m = Matrix(arr);
+//     return m;
+// }
+
+
+Point rotation(Point x,Point a, double angle)
 {
-    a.normalize();
-    double arr[4][4];
-    double c = cosf64(angle * M_PI / 180.0);
-    double s = sinf64(angle * M_PI / 180.0);
+    
+    double cosT=cosf64(angle*M_PI/180.0);
+    double sinT=sinf64(angle*M_PI/180.0);
 
-    arr[0][0] = c + a.x * a.x * (1 - c);
-    arr[0][1] = a.x * a.y * (1 - c) - a.z * s;
-    arr[0][2] = a.x * a.z * (1 - c) + a.y * s;
-    arr[0][3] = 0.0;
+    // cos(theta) *x
+    Point temp=x.scalarMultiply(cosT);
 
-    arr[1][0] = a.y * a.x * (1 - c) + a.z * s;
-    arr[1][1] = c + a.y * a.y * (1 - c);
-    arr[1][2] = a.y * a.z * (1 - c) - a.x * s;
-    arr[1][3] = 0.0;
+    // a.x
+    double ax=a.dotProduct(x);
 
-    arr[2][0] = a.z * a.x * (1 - c) - a.y * s;
-    arr[2][1] = a.z * a.y * (1 - c) + a.x * s;
-    arr[2][2] = c + a.z * a.z * (1 - c);
-    arr[2][3] = 0.0;
+    //(1-cosTheta)(a.x)a
+    Point temp2=a.scalarMultiply((1-cosT)*ax);
 
-    arr[3][0] = 0.0;
-    arr[3][1] = 0.0;
-    arr[3][2] = 0.0;
-    arr[3][3] = 1.0;
+    // a cross x
+    Point temp3=a.crossProduct(x);
+    // sinT (a cross x)
+    temp3=temp3.scalarMultiply(sinT);
 
-    Matrix m = Matrix(arr);
-    return m;
+    //add them all
+    Point result=temp.add(temp2);
+    result=result.add(temp3);
+
+    return result;
+
+
+
+
 }
+
+
 
 Matrix rotationMatrixGen(double ax, double ay, double az, double angle)
 {
     Point a = Point(ax, ay, az);
-    Matrix rodriguezMatrix = rodriguezMatrixGen(a, angle);
+    a.normalize();
+    //Matrix rodriguezMatrix = rodriguezMatrixGen(a, angle);
     Point i = Point(1, 0, 0);
     Point j = Point(0, 1, 0);
     Point k = Point(0, 0, 1);
-    Point c1 = rodriguezMatrix.pointMultiplication(i);
-    Point c2 = rodriguezMatrix.pointMultiplication(j);
-    Point c3 = rodriguezMatrix.pointMultiplication(k);
+    Point c1 = rotation(i,a,angle);
+    Point c2 = rotation(j,a,angle);;
+    Point c3 = rotation(k,a,angle);;
 
     double rotationArr[4][4];
 

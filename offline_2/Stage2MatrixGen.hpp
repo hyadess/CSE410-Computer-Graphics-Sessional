@@ -1,8 +1,8 @@
 #ifndef STAGE2
 #define STAGE2
 
-#include "MatrixClass.cpp"
-#include "PointClass.cpp"
+#include "MatrixClass.hpp"
+#include "PointClass.hpp"
 
 
 
@@ -72,7 +72,8 @@ Matrix viewTransform(Point eye,Point look,Point up)
 
     Matrix rotationMatrix = Matrix(rotationArr);
 
-    rotationMatrix.multiplication(translationMatrix);
+    Matrix resultMatrix=rotationMatrix.multiplication(translationMatrix);
+    return resultMatrix;
 
 
 

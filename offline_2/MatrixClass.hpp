@@ -3,11 +3,25 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-#include "PointClass.cpp"
+#include "PointClass.hpp"
 class Matrix
 {
 public:
     double arr[4][4];
+    Matrix()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                this->arr[i][j] = 0;
+                if (i == j && i != 3)
+                {
+                    arr[i][j] = 1;
+                }
+            }
+        }
+    }
     Matrix(double arr[4][4])
     {
         for (int i = 0; i < 4; i++)
@@ -19,7 +33,7 @@ public:
         }
     }
 
-    void multiplication(Matrix p)
+    Matrix multiplication(Matrix p)
     {
         double result[4][4];
         for (int i = 0; i < 4; ++i)
@@ -33,13 +47,8 @@ public:
                 }
             }
         }
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                this->arr[i][j] = result[i][j];
-            }
-        }
+        Matrix newMatrix=Matrix(result);
+        return newMatrix;
     }
 
     Point pointMultiplication(Point p)
@@ -60,7 +69,7 @@ public:
             }
         }
 
-        Point newP=Point(resultPoint[0],resultPoint[1],resultPoint[2]);
+        Point newP = Point(resultPoint[0], resultPoint[1], resultPoint[2]);
         newP.setScale(resultPoint[3]);
         return newP;
     }
