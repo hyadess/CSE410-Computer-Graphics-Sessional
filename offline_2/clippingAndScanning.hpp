@@ -9,8 +9,8 @@ using namespace std;
 void buffering(int triangle)
 {
     ifstream fin("./outputs/stage3.txt");
-    ofstream fout("./outputs/zBuffer.txt");
-    ifstream fin2("./spec/IOs/1/config.txt");
+    ofstream fout("./outputs/z_buffer.txt");
+    ifstream fin2("./spec/IOs/5/config.txt");
 
 
 
@@ -45,8 +45,14 @@ void buffering(int triangle)
         fin >> t.b.x >> t.b.y >> t.b.z;
         fin >> t.c.x >> t.c.y >> t.c.z;
 
-        t.sort();
+        //we are sorting the points so that instead of considering 3 edges, we can do the whole scanning with only two edges.
+        t.sortPoints();
         t.recolor();
+
+        //sorted such that a.y < b.y < c.y
+
+
+        // for the first edge AB.............we will calculate Xs and Zs .................................
 
         // clipping
         double min_y = t.a.y;
@@ -60,13 +66,20 @@ void buffering(int triangle)
         for (double y = min_y; y <= max_y; y += dy)
         {
 
-            double min_x = 0;
+            double min_x = 1;
             double max_x = -1;
-            double min_z = 0;
+
+
+            double min_z = 1;
             double max_z = -1;
 
-            if (t.b.y != t.a.y and t.a.y != t.c.y)
+            if (t.b.y != t.a.y && t.a.y != t.c.y) // to bypass divide by 0..................
             {
+                // Xs = x1 + (x2-x1) * (Ys-y1) / (y2 -y1)
+                // same way for Zs.....
+                // here, we are working with AB edge... so the scanline will always intersect another edge which is AC.
+                //but if the line is parallel to x axis, then it would not happen and min_x == max_x 
+
                 min_x = t.a.x + (t.b.x - t.a.x) * (y - t.a.y) / (t.b.y - t.a.y);
                 max_x = t.a.x + (t.c.x - t.a.x) * (y - t.a.y) / (t.c.y - t.a.y);
 
@@ -80,12 +93,14 @@ void buffering(int triangle)
                 }
             }
 
+            //clipping.................
+
             min_x = max(min_x, box_left);
             max_x = min(max_x, box_right);
 
             for (double x = min_x; x <= max_x; x += dx)
             {
-                if (max_x == min_x)
+                if (max_x == min_x) // to avoid divide by 0....................
                     continue;
 
                 int i = (Top_Y - y) / dy;
@@ -103,6 +118,8 @@ void buffering(int triangle)
         min_y = t.b.y;
         max_y = t.c.y;
 
+        //clipping...........
+
         min_y = max(min_y, box_bottom);
         max_y = min(max_y, box_top);
 
@@ -115,8 +132,12 @@ void buffering(int triangle)
             double min_z = 0;
             double max_z = -1;
 
-            if (t.b.y != t.c.y and t.a.y != t.c.y)
+            if (t.b.y != t.c.y and t.a.y != t.c.y) // to bypass divide by 0..................
             {
+                // Xs = x1 + (x2-x1) * (Ys-y1) / (y2 -y1)
+                // same way for Zs.....
+                // here, we are working with BC edge... so the scanline will always intersect another edge which is AC.
+                //but if the line is parallel to x axis, then it would not happen and min_x == max_x 
                 min_x = t.c.x + (t.b.x - t.c.x) * (y - t.c.y) / (t.b.y - t.c.y);
                 max_x = t.a.x + (t.c.x - t.a.x) * (y - t.a.y) / (t.c.y - t.a.y);
 
@@ -129,6 +150,7 @@ void buffering(int triangle)
                     swap(min_z, max_z);
                 }
             }
+            //clipping.................
             min_x = max(min_x, box_left);
             max_x = min(max_x, box_right);
 

@@ -13,7 +13,7 @@ using namespace std;
 int main()
 {
     /// STAGE 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    ifstream fin("./spec/IOs/1/scene.txt");
+    ifstream fin("./spec/IOs/5/scene.txt");
     ofstream fout("./outputs/stage1.txt");
 
     Point eye, look, up;

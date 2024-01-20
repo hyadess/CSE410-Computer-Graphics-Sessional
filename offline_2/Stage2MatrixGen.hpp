@@ -4,8 +4,6 @@
 #include "MatrixClass.hpp"
 #include "PointClass.hpp"
 
-
-
 Matrix translationPart(Point eye)
 {
     double translationArr[4][4];
@@ -35,18 +33,15 @@ Matrix translationPart(Point eye)
     return resultMatrix;
 }
 
-
-
-Matrix viewTransform(Point eye,Point look,Point up)
+Matrix viewTransform(Point eye, Point look, Point up)
 {
-    Point l=look.subtract(eye);
+    Point l = look.subtract(eye);
     l.normalize();
-    Point r=l.crossProduct(up);
+    Point r = l.crossProduct(up);
     r.normalize();
-    Point u=r.crossProduct(l);
+    Point u = r.crossProduct(l);
 
-
-    Matrix translationMatrix=translationPart(eye);
+    Matrix translationMatrix = translationPart(eye);
 
     double rotationArr[4][4];
 
@@ -72,26 +67,10 @@ Matrix viewTransform(Point eye,Point look,Point up)
 
     Matrix rotationMatrix = Matrix(rotationArr);
 
-    Matrix resultMatrix=rotationMatrix.multiplication(translationMatrix);
+    Matrix resultMatrix = rotationMatrix.multiplication(translationMatrix);
     return resultMatrix;
-
-
-
 }
-
-
-
-
 
 #endif
 
-
-
-
-
-
 #
-
-
-
-

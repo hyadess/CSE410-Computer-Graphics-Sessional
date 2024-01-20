@@ -24,7 +24,7 @@ public:
         this->c = Point();
     }
 
-    void sort()
+    void sortPoints()
     {
         if (b.y < a.y)
             swap(a, b);
