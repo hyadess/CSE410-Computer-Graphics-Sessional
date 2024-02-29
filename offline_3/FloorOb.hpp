@@ -40,7 +40,7 @@ public:
         }
     }
 
-    virtual Ray getNormal(Point point, Ray incidentRay)
+    virtual Ray getNormalAt(Point point, Ray incidentRay)
     {
         if (incidentRay.direction.z > 0)
             return Ray(point, Point(0, 0, 1));
@@ -71,7 +71,7 @@ public:
         }
     }
 
-    virtual double intersectHelper(Ray ray, Color &color, int level)
+    virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
         Point normal = Point(0, 0, 1);
         double dotP = normal.dotProduct(ray.direction);

@@ -4,6 +4,7 @@
 
 class Sphere : public Object
 {
+public:
     Sphere()
     {
     }
@@ -14,7 +15,7 @@ class Sphere : public Object
         length = radius;
     }
 
-    virtual Ray getNormal(Point point, Ray incidentRay)
+    virtual Ray getNormalAt(Point point, Ray incidentRay)
     {
         return Ray(point, point.subtract(reference_point));
     }
@@ -66,7 +67,7 @@ class Sphere : public Object
         }
     }
 
-    virtual double intersectHelper(Ray ray, Color &color, int level)
+    virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 
         ray.origin = ray.origin.subtract(reference_point); // adjust ray origin

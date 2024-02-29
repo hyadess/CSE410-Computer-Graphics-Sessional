@@ -9,12 +9,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define pi (2 * acos(0.0))
-
 #include "Point.hpp"
 #include "Ray.hpp"
 #include "Color.hpp"
-#include "Globals.hpp"
+#include "Light.hpp"
+#include "SpotLight.hpp"
 #include "CommonOP.hpp"
+class Object;
 class Object
 {
 public:
@@ -65,7 +66,8 @@ public:
     virtual double getIntersectingT(Ray r, Color &color, int level) = 0;
     virtual Ray getNormalAt(Point p, Ray incient) = 0;
 
-    virtual double intersect(Ray ray, Color &color, int level)
+    virtual double intersect(Ray ray, Color &color, int level,
+                             vector<Object *> objects, vector<Light *> lights, vector<SpotLight *> spotlights, int recursionLevel = 3)
     {
         double t = getIntersectingT(ray, color, level);
 
@@ -235,7 +237,7 @@ public:
 
             for (int k = 0; k < (int)objects.size(); k++)
             {
-                t = objects[k]->intersect(reflectionRay, color, 0);
+                t = objects[k]->intersect(reflectionRay, color, 0, objects, lights, spotlights, recursionLevel);
                 if (t > 0 && t < tMin)
                     tMin = t, nearestObjectIndex = k;
             }
@@ -246,7 +248,7 @@ public:
 
                 Color colorTemp(0, 0, 0); // refelction color
                 // cout<<"Before Color "<<color.r<<" "<<color.g<<" "<<color.b<<endl;
-                double t = objects[nearestObjectIndex]->intersect(reflectionRay, colorTemp, level + 1);
+                double t = objects[nearestObjectIndex]->intersect(reflectionRay, colorTemp, level + 1, objects, lights, spotlights, recursionLevel);
 
                 // colorTemp will be updated while in the subsequent call
                 // update color using the impact of reflection

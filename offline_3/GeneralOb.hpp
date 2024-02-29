@@ -1,13 +1,17 @@
+
+#ifndef GENERALOB
 #define GENERALOB
-#ifdef GENERALOB
 #include "Object.hpp"
 #include "Ray.hpp"
 
 class GeneralOb : public Object
 {
-    double A, B, C, D, E, F, G, H, I, J;
 
 public:
+    double A, B, C, D, E, F, G, H, I, J;
+    GeneralOb()
+    {
+    }
     GeneralOb(double a, double b, double c, double d, double e, double f, double g, double h, double i, double j)
     {
         A = a;
@@ -67,7 +71,7 @@ public:
         return true;
     }
 
-    virtual double intersectHelper(Ray ray, Color &color, int level)
+    virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 
         double X0 = ray.origin.x;

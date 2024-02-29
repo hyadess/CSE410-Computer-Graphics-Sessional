@@ -1,11 +1,13 @@
+#ifndef COMMONOP
 #define COMMONOP
-#ifdef COMMONOP
+
 #include "Point.hpp"
 
 // r=a-2(a.n)n
 Point Reflection(Point n, Point a)
 
 {
+    n.normalize();
     double dot = a.dotProduct(n);
     Point temp = n.scalarMultiply(2 * dot);
     Point reflected = a.subtract(temp);

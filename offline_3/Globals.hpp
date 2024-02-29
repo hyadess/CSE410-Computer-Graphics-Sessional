@@ -1,12 +1,11 @@
-#define GLOBALS
-#ifndef GLOBALS
+#ifndef GLOBAL
+#define GLOBAL
 
-#include <bits/stdc++.h>
-
-#include "Point.hpp"
-#include "Color.hpp"
-#include "Ray.hpp"
 #include "Object.hpp"
+#include "Light.hpp"
+#include "SpotLight.hpp"
+#include <bits/stdc++.h>
+using namespace std;
 
 
 

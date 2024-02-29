@@ -5,7 +5,7 @@
 #include "Point.hpp"
 #include "Color.hpp"
 
-class Triangle
+class Triangle: public Object
 {
 public:
     Point a, b, c;
@@ -71,7 +71,7 @@ public:
         glEnd();
     }
 
-    virtual double intersectHelper(Ray ray, Color &color, int level)
+    virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 
         double betaMat[3][3] = {
