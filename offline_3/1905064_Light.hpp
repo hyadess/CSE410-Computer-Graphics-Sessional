@@ -7,8 +7,8 @@
 #include <glut.h>
 #endif
 
-#include "Point.hpp"
-#include "Color.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Color.hpp"
 
 class Light
 {

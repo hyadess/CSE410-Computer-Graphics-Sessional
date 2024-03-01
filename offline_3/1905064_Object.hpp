@@ -9,12 +9,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define pi (2 * acos(0.0))
-#include "Point.hpp"
-#include "Ray.hpp"
-#include "Color.hpp"
-#include "Light.hpp"
-#include "SpotLight.hpp"
-#include "CommonOP.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Ray.hpp"
+#include "1905064_Color.hpp"
+#include "1905064_Light.hpp"
+#include "1905064_SpotLight.hpp"
+#include "1905064_CommonOP.hpp"
 class Object;
 class Object
 {

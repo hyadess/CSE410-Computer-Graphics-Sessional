@@ -1,11 +1,11 @@
 #ifndef TRIANGLEOB
 #define TRIANGLEOB
 
-#include "Object.hpp"
-#include "Point.hpp"
-#include "Color.hpp"
+#include "1905064_Object.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Color.hpp"
 
-class Triangle: public Object
+class Triangle : public Object
 {
 public:
     Point a, b, c;
@@ -76,28 +76,27 @@ public:
     }
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
-
-        double betaMat[3][3] = {
-            {a.x - ray.origin.x, a.x - c.x, ray.direction.x},
-            {a.y - ray.origin.y, a.y - c.y, ray.direction.y},
-            {a.z - ray.origin.z, a.z - c.z, ray.direction.z}};
-        double gammaMat[3][3] = {
-            {a.x - b.x, a.x - ray.origin.x, ray.direction.x},
-            {a.y - b.y, a.y - ray.origin.y, ray.direction.y},
-            {a.z - b.z, a.z - ray.origin.z, ray.direction.z}};
-        double tMat[3][3] = {
-            {a.x - b.x, a.x - c.x, a.x - ray.origin.x},
-            {a.y - b.y, a.y - c.y, a.y - ray.origin.y},
-            {a.z - b.z, a.z - c.z, a.z - ray.origin.z}};
         double AMat[3][3]{
             {a.x - b.x, a.x - c.x, ray.direction.x},
             {a.y - b.y, a.y - c.y, ray.direction.y},
             {a.z - b.z, a.z - c.z, ray.direction.z}};
+        double tMatrix[3][3] = {
+            {a.x - b.x, a.x - c.x, a.x - ray.origin.x},
+            {a.y - b.y, a.y - c.y, a.y - ray.origin.y},
+            {a.z - b.z, a.z - c.z, a.z - ray.origin.z}};
+        double betaMatrix[3][3] = {
+            {a.x - ray.origin.x, a.x - c.x, ray.direction.x},
+            {a.y - ray.origin.y, a.y - c.y, ray.direction.y},
+            {a.z - ray.origin.z, a.z - c.z, ray.direction.z}};
+        double gammaMatrtix[3][3] = {
+            {a.x - b.x, a.x - ray.origin.x, ray.direction.x},
+            {a.y - b.y, a.y - ray.origin.y, ray.direction.y},
+            {a.z - b.z, a.z - ray.origin.z, ray.direction.z}};
 
         double Adet = determinant(AMat);
-        double beta = determinant(betaMat) / Adet;
-        double gamma = determinant(gammaMat) / Adet;
-        double t = determinant(tMat) / Adet;
+        double beta = determinant(betaMatrix) / Adet;
+        double gamma = determinant(gammaMatrtix) / Adet;
+        double t = determinant(tMatrix) / Adet;
 
         if (beta + gamma < 1 && beta > 0 && gamma > 0 && t > 0)
         {

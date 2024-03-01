@@ -1,7 +1,7 @@
 #ifndef COMMONOP
 #define COMMONOP
 
-#include "Point.hpp"
+#include "1905064_Point.hpp"
 
 // r=a-2(a.n)n
 Point Reflection(Point n, Point a)

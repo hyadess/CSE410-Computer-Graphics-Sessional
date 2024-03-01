@@ -2,15 +2,15 @@
 #define INPUT
 
 #include <iostream>
-#include "Object.hpp"
-#include "Point.hpp"
-#include "Light.hpp"
-#include "SpotLight.hpp"
+#include "1905064_Object.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Light.hpp"
+#include "1905064_SpotLight.hpp"
 
-#include "GeneralOb.hpp"
-#include "Ray.hpp"
-#include "SphereOb.hpp"
-#include "TriangleOb.hpp"
+#include "1905064_GeneralOb.hpp"
+#include "1905064_Ray.hpp"
+#include "1905064_SphereOb.hpp"
+#include "1905064_TriangleOb.hpp"
 
 class Input
 {

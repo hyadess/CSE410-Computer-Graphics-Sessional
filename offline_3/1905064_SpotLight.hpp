@@ -7,9 +7,9 @@
 #include <glut.h>
 #endif
 
-#include "Point.hpp"
-#include "Light.hpp"
-#include "Color.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Light.hpp"
+#include "1905064_Color.hpp"
 
 class SpotLight
 {

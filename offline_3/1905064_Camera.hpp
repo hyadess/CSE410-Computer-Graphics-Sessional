@@ -1,6 +1,6 @@
-#ifndef CAMERA 
+#ifndef CAMERA
 #define CAMERA
-#include "Point.hpp"
+#include "1905064_Point.hpp"
 
 class Camera
 {
@@ -13,8 +13,8 @@ public:
     Camera()
     {
         pos = Point(200, 0, 10);
-        look = Point(-1/sqrt(2), -1/sqrt(2), 0);
-        right = Point(-1/sqrt(2), 1/sqrt(2), 0);
+        look = Point(-1 / sqrt(2), -1 / sqrt(2), 0);
+        right = Point(-1 / sqrt(2), 1 / sqrt(2), 0);
         up = Point(0, 0, 1);
     }
 };

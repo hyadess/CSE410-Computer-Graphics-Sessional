@@ -1,9 +1,9 @@
 #ifndef GLOBAL
 #define GLOBAL
 
-#include "Object.hpp"
-#include "Light.hpp"
-#include "SpotLight.hpp"
+#include "1905064_Object.hpp"
+#include "1905064_Light.hpp"
+#include "1905064_SpotLight.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 

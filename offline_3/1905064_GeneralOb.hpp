@@ -1,8 +1,8 @@
 
 #ifndef GENERALOB
 #define GENERALOB
-#include "Object.hpp"
-#include "Ray.hpp"
+#include "1905064_Object.hpp"
+#include "1905064_Ray.hpp"
 
 class GeneralOb : public Object
 {

@@ -7,7 +7,7 @@
 #include <glut.h>
 #endif
 
-#include "Point.hpp"
+#include "1905064_Point.hpp"
 
 class Ray
 {

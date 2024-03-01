@@ -8,20 +8,20 @@
 #include <glut.h>
 #endif
 #include "bitmap_image.hpp"
-#include "Globals.hpp"
+#include "1905064_Globals.hpp"
 
-#include "Point.hpp"
-#include "Color.hpp"
-#include "Ray.hpp"
-#include "Object.hpp"
-#include "Light.hpp"
-#include "SpotLight.hpp"
-#include "Camera.hpp"
-#include "Input.hpp"
-#include "SphereOb.hpp"
-#include "TriangleOb.hpp"
-#include "GeneralOb.hpp"
-#include "FloorOb.hpp"
+#include "1905064_Point.hpp"
+#include "1905064_Color.hpp"
+#include "1905064_Ray.hpp"
+#include "1905064_Object.hpp"
+#include "1905064_Light.hpp"
+#include "1905064_SpotLight.hpp"
+#include "1905064_Camera.hpp"
+#include "1905064_Input.hpp"
+#include "1905064_SphereOb.hpp"
+#include "1905064_TriangleOb.hpp"
+#include "1905064_GeneralOb.hpp"
+#include "1905064_FloorOb.hpp"
 
 // global variables..................
 vector<Light *> lights;
@@ -39,7 +39,7 @@ bool draw_grid = false;
 
 void loadData()
 {
-    ifstream in("scene.txt");
+    ifstream in("input/scene.txt");
     in >> recursionLevel >> imageHeight;
 
     imageWidth = imageHeight;
@@ -97,8 +97,6 @@ void loadData()
         spotlights.push_back(spotlight);
     }
 
-
-
     Object *floor;
     floor = new Floor(1000, 20);
     floor->setColor(Color(0.5, 0.5, 0.5));
@@ -111,12 +109,9 @@ void capture()
 {
     cout << "Image Capturing started" << endl;
 
-  
     for (int i = 0; i < imageWidth; i++)
         for (int j = 0; j < imageHeight; j++)
             image.set_pixel(i, j, 0, 0, 0);
-
-  
 
     double planeDistance = (windowHeight / 2.0) / tan((pi * viewAngle) / (360.0));
 
@@ -126,8 +121,6 @@ void capture()
 
     double du = windowWidth / (imageWidth * 1.0);
     double dv = windowHeight / (imageHeight * 1.0);
-
-    
 
     // topLeft = topLeft + (right * du / 2.0) - (up * dv / 2.0);
 
@@ -144,11 +137,8 @@ void capture()
             // pixel = topLeft + (right * du * i) - (up * dv * j);
             Point pixel = topLeft.add(camera.right.scalarMultiply(du * i)).subtract(camera.up.scalarMultiply(dv * j));
 
-            
             Ray ray(camera.pos, pixel.subtract(camera.pos));
             Color color;
-
-            
 
             // find nearest object
             tMin = -1;
@@ -165,10 +155,10 @@ void capture()
             {
 
                 color = Color(0, 0, 0);
-                
+
                 double t = objects[nearestObjectIndex]->intersect(ray, color, 1, objects, lights, spotlights, recursionLevel);
 
-                //normalize the color values...................
+                // normalize the color values...................
                 if (color.r > 1)
                     color.r = 1;
                 if (color.g > 1)
@@ -183,13 +173,12 @@ void capture()
                 if (color.b < 0)
                     color.b = 0;
 
-    
                 image.set_pixel(i, j, 255 * color.r, 255 * color.g, 255 * color.b);
             }
         }
     }
 
-    image.save_image("Output_" + to_string(imageCount) + ".bmp");
+    image.save_image("output/Output_1" + to_string(imageCount) + ".bmp");
     imageCount++;
     cout << "Saving Image" << endl;
 }
@@ -209,16 +198,12 @@ void initGL()
     // clear the screen
     glClearColor(0, 0, 0, 0);
 
-   
     glMatrixMode(GL_PROJECTION);
 
-    
     glLoadIdentity();
-
 
     gluPerspective(80, 1, 1, 1000.0);
 }
-
 
 void drawAxis()
 {
@@ -249,20 +234,18 @@ void drawGrid()
     int i;
     if (draw_grid)
     {
-        glColor3f(0.6, 0.6, 0.6); 
+        glColor3f(0.6, 0.6, 0.6);
         glBegin(GL_LINES);
         {
             for (i = -8; i <= 8; i++)
             {
 
                 if (i == 0)
-                    continue; 
+                    continue;
 
-               
                 glVertex3f(i * 10, -90, 0);
                 glVertex3f(i * 10, 90, 0);
 
-               
                 glVertex3f(-90, i * 10, 0);
                 glVertex3f(90, i * 10, 0);
             }
@@ -273,12 +256,11 @@ void drawGrid()
 
 void display()
 {
-    
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  
     glMatrixMode(GL_MODELVIEW);
 
     glLoadIdentity();
@@ -306,7 +288,7 @@ void display()
     for (int i = 0; i < spotlights.size(); i++)
     {
         SpotLight *l = spotlights[i];
-        
+
         spotlights[i]->draw();
     }
 
