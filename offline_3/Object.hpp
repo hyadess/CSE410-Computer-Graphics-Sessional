@@ -64,6 +64,7 @@ public:
     }
     virtual Color getColorAt(Point p)
     {
+
         return Color(this->color.r, this->color.g, this->color.b);
     }
     virtual void draw() = 0;
@@ -85,8 +86,10 @@ public:
         // get color and point of the intersection
         //  p=p0+td
         Point intersectionPoint = ray.origin.add(ray.direction.scalarMultiply(t));
+
         Color colorAtIntersection = getColorAt(intersectionPoint);
-        cout<<"Color at intersection "<< colorAtIntersection.r<<" "<<colorAtIntersection.g<<" "<<colorAtIntersection.b<<endl;
+
+
 
         // update color with ambience (thing will become dimmer)
         color.r = colorAtIntersection.r * coefficients[0];

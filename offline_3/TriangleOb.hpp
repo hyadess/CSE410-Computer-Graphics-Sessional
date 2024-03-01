@@ -9,7 +9,6 @@ class Triangle: public Object
 {
 public:
     Point a, b, c;
-    Color color;
 
     Triangle(Point a, Point b, Point c)
     {
