@@ -58,6 +58,10 @@ public:
         this->color = color;
     }
 
+    virtual string returnType()
+    {
+        return "Object";
+    }
     virtual Color getColorAt(Point p)
     {
         return Color(this->color.r, this->color.g, this->color.b);
@@ -67,7 +71,7 @@ public:
     virtual Ray getNormalAt(Point p, Ray incient) = 0;
 
     virtual double intersect(Ray ray, Color &color, int level,
-                             vector<Object *> objects, vector<Light *> lights, vector<SpotLight *> spotlights, int recursionLevel = 3)
+                             vector<Object *> &objects, vector<Light *> &lights, vector<SpotLight *> &spotlights, int recursionLevel = 3)
     {
         double t = getIntersectingT(ray, color, level);
 
@@ -82,6 +86,7 @@ public:
         //  p=p0+td
         Point intersectionPoint = ray.origin.add(ray.direction.scalarMultiply(t));
         Color colorAtIntersection = getColorAt(intersectionPoint);
+        cout<<"Color at intersection "<< colorAtIntersection.r<<" "<<colorAtIntersection.g<<" "<<colorAtIntersection.b<<endl;
 
         // update color with ambience (thing will become dimmer)
         color.r = colorAtIntersection.r * coefficients[0];
@@ -165,7 +170,7 @@ public:
             double dot = lightDirection.dotProduct(spotlights[i]->direction);
             double angle = acos(dot / (lightDirection.value() * spotlights[i]->direction.value())) * (180.0 / pi);
 
-            if (fabs(angle) < spotlights[i]->cutoff)
+            if (fabs(angle) <= spotlights[i]->cutoff)
             {
 
                 Ray lightRay = Ray(lightPosition, lightDirection);

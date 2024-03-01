@@ -66,7 +66,10 @@ public:
             glPopMatrix();
         }
     }
-
+    string returnType()
+    {
+        return "circle";
+    }
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 
@@ -74,7 +77,7 @@ public:
 
         double a = 1;
         double b = 2 * ray.origin.dotProduct(ray.direction);
-        double c = ray.origin.dotProduct(ray.direction) - (length * length);
+        double c = ray.origin.dotProduct(ray.origin) - (length * length);
 
         double discriminant = pow(b, 2) - 4 * a * c;
         double t = -1;

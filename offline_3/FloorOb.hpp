@@ -70,7 +70,10 @@ public:
             }
         }
     }
-
+    string returnType()
+    {
+        return "floor";
+    }
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
         Point normal = Point(0, 0, 1);

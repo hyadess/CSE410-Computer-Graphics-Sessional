@@ -51,7 +51,7 @@ public:
 
         if (incidentRay.direction.dotProduct(normal) < 0)
         {
-            return Ray(point, normal.scalarMultiply(-1));
+            return Ray(point, normal.scalarMultiply(-1.0));
         }
         else
         {
@@ -71,6 +71,10 @@ public:
         glEnd();
     }
 
+    string returnType()
+    {
+        return "Triangle";
+    }
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 

@@ -24,7 +24,7 @@ public:
         this->origin = origin;
         this->direction = direction;
         this->direction.normalize();
-        direction.normalize();
+        //direction.normalize();
     }
 };
 

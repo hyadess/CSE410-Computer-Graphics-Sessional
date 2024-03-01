@@ -70,7 +70,10 @@ public:
 
         return true;
     }
-
+    string returnType()
+    {
+        return "general";
+    }
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
 

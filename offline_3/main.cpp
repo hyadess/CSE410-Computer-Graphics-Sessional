@@ -211,14 +211,27 @@ int numSegments = 50;
 void initGL()
 {
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
     draw_axis = true;
     draw_grid = true;
     loadData();
     image = bitmap_image(imageWidth, imageHeight);
 
     camera = Camera();
+
+    // clear the screen
+    glClearColor(0, 0, 0, 0);
+
+    /************************
+    / set-up projection here
+    ************************/
+    // load the PROJECTION matrix
+    glMatrixMode(GL_PROJECTION);
+
+    // initialize the matrix
+    glLoadIdentity();
+
+    // give PERSPECTIVE parameters
+    gluPerspective(80, 1, 1, 1000.0);
 }
 
 /* Draw axes: X in Red, Y in Green and Z in Blue */
@@ -275,16 +288,26 @@ void drawGrid()
 
 void display()
 {
-    float cx = 1, cy = 1;
+    // clear the display
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW); // To operate on Model-View matrix
-    glLoadIdentity();           // Reset the model-view matrix
+    glClearColor(0, 0, 0, 0); // color black
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    /********************
+    / set-up camera here
+    ********************/
+    // load the correct matrix -- MODEL-VIEW matrix
+    glMatrixMode(GL_MODELVIEW);
+
+    // initialize the matrix
+    glLoadIdentity();
 
     gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z,
               camera.pos.x + camera.look.x, camera.pos.y + camera.look.y, camera.pos.z + camera.look.z,
               camera.up.x, camera.up.y, camera.up.z);
     // draw
     glRotatef(camera.cameraRotation, 0, 0, 1);
+    glMatrixMode(GL_MODELVIEW);
 
     drawAxis();
     drawGrid();
@@ -436,15 +459,20 @@ int main(int argc, char **argv)
 {
 
     glutInit(&argc, argv);
-    glutInitWindowSize(840, 840);
+    glutInitWindowSize(500, 500);
     glutInitWindowPosition(50, 50);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
     glutCreateWindow("Ray Tracing");
+
+    initGL();
+
+    glEnable(GL_DEPTH_TEST);
+
     glutDisplayFunc(display);
-    glutReshapeFunc(reshapeListener);
+    // glutReshapeFunc(reshapeListener);
     glutKeyboardFunc(keyboardListener);
     glutSpecialFunc(specialKeyListener);
-    initGL();
+
     glutMainLoop();
     objects.clear();
     objects.shrink_to_fit();

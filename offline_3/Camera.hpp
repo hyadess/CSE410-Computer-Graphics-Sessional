@@ -13,8 +13,8 @@ public:
     Camera()
     {
         pos = Point(200, 0, 10);
-        look = Point(-1, 0, 0);
-        right = Point(0, 1, 0);
+        look = Point(-1/sqrt(2), -1/sqrt(2), 0);
+        right = Point(-1/sqrt(2), 1/sqrt(2), 0);
         up = Point(0, 0, 1);
     }
 };
