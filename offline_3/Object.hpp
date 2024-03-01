@@ -89,14 +89,10 @@ public:
 
         Color colorAtIntersection = getColorAt(intersectionPoint);
 
-
-
         // update color with ambience (thing will become dimmer)
         color.r = colorAtIntersection.r * coefficients[0];
         color.g = colorAtIntersection.g * coefficients[0];
         color.b = colorAtIntersection.b * coefficients[0];
-
-        // cout<< " Lights size " << lights.size() << endl;
 
         for (int i = 0; i < lights.size(); i++)
         {
@@ -113,28 +109,23 @@ public:
             // calculate normal at intersectionPoint
             Ray normal = getNormalAt(intersectionPoint, lightRay);
 
-            /**
-             * @brief check if incedent ray is not obstructed by any other object
-             *
-             */
-
             double t2 = intersectionPoint.subtract(lightPosition).value();
             if (t2 < 1e-5)
                 continue;
 
-            bool obscured = false;
+            bool obstructed = false;
 
             for (Object *obj : objects)
             {
                 double t3 = obj->getIntersectingT(lightRay, color, 0);
                 if (t3 > 0 && t3 + 1e-5 < t2)
                 {
-                    obscured = true;
+                    obstructed = true;
                     break;
                 }
             }
 
-            if (!obscured)
+            if (!obstructed)
             {
 
                 // lambert value
@@ -158,10 +149,7 @@ public:
             }
         }
 
-        /**
-         * @brief same calculation as above, but for spotlights
-         * Do until ray cast from light_pos to intersectionPoint exceeds cutoff-angle for the light source
-         */
+        // same for spotlights...just need to check the angle of the light with the direction of the spotlight..(cutoff angle)
 
         for (int i = 0; i < spotlights.size(); i++)
         {
@@ -185,19 +173,19 @@ public:
                 if (t2 < 1e-5)
                     continue;
 
-                bool obscured = false;
+                bool obstructed = false;
 
                 for (Object *obj : objects)
                 {
                     double t3 = obj->getIntersectingT(lightRay, color, 0);
                     if (t3 > 0 && t3 + 1e-5 < t2)
                     {
-                        obscured = true;
+                        obstructed = true;
                         break;
                     }
                 }
 
-                if (!obscured)
+                if (!obstructed)
                 {
 
                     double phong = max(0.0, -ray.direction.dotProduct(reflection.direction));
@@ -215,14 +203,8 @@ public:
             }
         }
 
-        /**
-         * @brief RECURSIVE REFLECTION
-         *
-         */
-
         if (level < recursionLevel)
         {
-            // if(level > 1) cout << "Recursion level " << level << endl;
 
             // find normal at intersectionPoint
             Ray normal = getNormalAt(intersectionPoint, ray);
@@ -230,12 +212,7 @@ public:
             // find reflected ray
             Ray reflectionRay = Ray(intersectionPoint, Reflection(normal.direction, ray.direction));
 
-            /**
-             * @brief slightly forward from the point
-             * (by moving the start a little bit towards the reflection direction)
-             * to avoid self intersection
-             *
-             */
+            // to avoid self intersection
             reflectionRay.origin = reflectionRay.origin.add(reflectionRay.direction.scalarMultiply(1e-5));
 
             // find nearest intersection object and do recursive call
@@ -252,27 +229,15 @@ public:
 
             if (nearestObjectIndex != -1)
             {
-                // cout<<"Object "<<nearestObjectIndex<<" intersected"<<endl;
 
                 Color colorTemp(0, 0, 0); // refelction color
-                // cout<<"Before Color "<<color.r<<" "<<color.g<<" "<<color.b<<endl;
-                double t = objects[nearestObjectIndex]->intersect(reflectionRay, colorTemp, level + 1, objects, lights, spotlights, recursionLevel);
 
-                // colorTemp will be updated while in the subsequent call
-                // update color using the impact of reflection
+                double t = objects[nearestObjectIndex]->intersect(reflectionRay, colorTemp, level + 1, objects, lights, spotlights, recursionLevel);
 
                 color.r += colorTemp.r * coefficients[3];
                 color.g += colorTemp.g * coefficients[3];
                 color.b += colorTemp.b * coefficients[3];
             }
-
-            // PT reflection = lightDirection - 2*(lightDirection*normal)*normal;
-            // reflection.normalize();
-            // double diffuse = max(0.0, lightDirection*normal);
-            // double specular = pow(max(0.0, reflection*ray.dir), shine);
-            // color.r += colorAtIntersection.r * coefficients[1] * diffuse + colorAtIntersection.r * coefficients[2] * specular;
-            // color.g += colorAtIntersection.g * coefficients[1] * diffuse + colorAtIntersection.g * coefficients[2] * specular;
-            // color.b += colorAtIntersection.b * coefficients[1] * diffuse + colorAtIntersection.b * coefficients[2] * specular;
         }
 
         return t;

@@ -72,7 +72,7 @@ void loadData()
         }
         else
         {
-            cout << objType << " is not a valid object type" << endl;
+            cout << objType << " is not a valid object" << endl;
         }
         objects.push_back(obj);
     }
@@ -97,38 +97,26 @@ void loadData()
         spotlights.push_back(spotlight);
     }
 
-    // for(int i=0;i<spotlights.size();i++){
-    // 	SpotLight* l = spotlights[i];
-    // 	// cout<<"Spotlight "<<spotlight<<endl;
 
-    // 	cout << fixed << setprecision(7) << l->pointLight.pos.x << " " << l->pointLight.pos.y << " " << l->pointLight.pos.z << " " << l->pointLight.color.r << " " << l->pointLight.color.g << " " << l->pointLight.color.b << " " << l->dir.x << " " << l->dir.y << " " << l->dir.z << " " << l->cutoffAngle<<endl;
-
-    // 	// cout<<"Spotlight pos "<<spotlights[i]->pointLight.pos.x<<" "<<spotlights[i]->pointLight.pos.y<<" "<<spotlights[i]->pointLight.pos.z<<endl;
-    // 	// cout<<"Spotlight dir "<<spotlights[i]->pointLight.dir.x<<" "<<spotlights[i]->pointLight.dir.y<<" "<<spotlights[i]->pointLight.dir.z<<endl;
-    // 	// cout<<"Spotlight cutOff "<<spotlights[i]->pointLight.cutOff<<endl;
-    // 	// spotlights[i]->draw();
-    // }
 
     Object *floor;
     floor = new Floor(1000, 20);
     floor->setColor(Color(0.5, 0.5, 0.5));
-    // vector <double> coefficients = {1, 1, 1, 1};
     vector<double> coefficients = {0.4, 0.2, 0.2, 0.2};
-    // vector <double> coefficients = {0.2, 0.2, 0.2, 0.2};
     floor->setCoefficients(coefficients);
     objects.push_back(floor);
 }
 
 void capture()
 {
-    cout << "Capturing Image" << endl;
+    cout << "Image Capturing started" << endl;
 
-    // initialize bitmap image and set background color to black
+  
     for (int i = 0; i < imageWidth; i++)
         for (int j = 0; j < imageHeight; j++)
             image.set_pixel(i, j, 0, 0, 0);
 
-    // image.save_image("black.bmp");
+  
 
     double planeDistance = (windowHeight / 2.0) / tan((pi * viewAngle) / (360.0));
 
@@ -139,7 +127,7 @@ void capture()
     double du = windowWidth / (imageWidth * 1.0);
     double dv = windowHeight / (imageHeight * 1.0);
 
-    // Choose middle of the grid cell
+    
 
     // topLeft = topLeft + (right * du / 2.0) - (up * dv / 2.0);
 
@@ -156,11 +144,11 @@ void capture()
             // pixel = topLeft + (right * du * i) - (up * dv * j);
             Point pixel = topLeft.add(camera.right.scalarMultiply(du * i)).subtract(camera.up.scalarMultiply(dv * j));
 
-            // cast ray from EYE to (curPixel-eye) direction ; eye is the position of the camera
+            
             Ray ray(camera.pos, pixel.subtract(camera.pos));
             Color color;
 
-            // cout<<"Ray direction "<<ray.dir<<endl;
+            
 
             // find nearest object
             tMin = -1;
@@ -175,12 +163,12 @@ void capture()
             // if nearest object is found, then shade the pixel
             if (nearestObjectIndex != -1)
             {
-                // cout<<"Object "<<nearestObjectIndex<<" intersected"<<endl;
-                // color = objects[nearestObjectIndex]->color;
+
                 color = Color(0, 0, 0);
-                // cout<<"Before Color "<<color.r<<" "<<color.g<<" "<<color.b<<endl;
+                
                 double t = objects[nearestObjectIndex]->intersect(ray, color, 1, objects, lights, spotlights, recursionLevel);
 
+                //normalize the color values...................
                 if (color.r > 1)
                     color.r = 1;
                 if (color.g > 1)
@@ -195,7 +183,7 @@ void capture()
                 if (color.b < 0)
                     color.b = 0;
 
-                // cout<<"After Color "<<color.r<<" "<<color.g<<" "<<color.b<<endl;
+    
                 image.set_pixel(i, j, 255 * color.r, 255 * color.g, 255 * color.b);
             }
         }
@@ -221,20 +209,17 @@ void initGL()
     // clear the screen
     glClearColor(0, 0, 0, 0);
 
-    /************************
-    / set-up projection here
-    ************************/
-    // load the PROJECTION matrix
+   
     glMatrixMode(GL_PROJECTION);
 
-    // initialize the matrix
+    
     glLoadIdentity();
 
-    // give PERSPECTIVE parameters
+
     gluPerspective(80, 1, 1, 1000.0);
 }
 
-/* Draw axes: X in Red, Y in Green and Z in Blue */
+
 void drawAxis()
 {
     if (draw_axis)
@@ -264,20 +249,20 @@ void drawGrid()
     int i;
     if (draw_grid)
     {
-        glColor3f(0.6, 0.6, 0.6); // grey
+        glColor3f(0.6, 0.6, 0.6); 
         glBegin(GL_LINES);
         {
             for (i = -8; i <= 8; i++)
             {
 
                 if (i == 0)
-                    continue; // SKIP the MAIN axes
+                    continue; 
 
-                // lines parallel to Y-axis
+               
                 glVertex3f(i * 10, -90, 0);
                 glVertex3f(i * 10, 90, 0);
 
-                // lines parallel to X-axis
+               
                 glVertex3f(-90, i * 10, 0);
                 glVertex3f(90, i * 10, 0);
             }
@@ -288,18 +273,14 @@ void drawGrid()
 
 void display()
 {
-    // clear the display
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0, 0, 0, 0); // color black
+    glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /********************
-    / set-up camera here
-    ********************/
-    // load the correct matrix -- MODEL-VIEW matrix
+  
     glMatrixMode(GL_MODELVIEW);
 
-    // initialize the matrix
     glLoadIdentity();
 
     gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z,
@@ -325,7 +306,7 @@ void display()
     for (int i = 0; i < spotlights.size(); i++)
     {
         SpotLight *l = spotlights[i];
-        // cout<<"Spotlight "<<spotlight<<endl
+        
         spotlights[i]->draw();
     }
 

@@ -115,10 +115,7 @@ public:
         }
 
         return t;
-        // if(level == 0) return t;
 
-        // Point intersectionPoint = ray.origin + ray.dir * t;
-        // Point normal = intersectionPoint - reference_point;
     }
 };
 

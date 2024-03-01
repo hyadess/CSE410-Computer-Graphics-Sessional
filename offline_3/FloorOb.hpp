@@ -14,12 +14,15 @@ public:
     Floor(int floorWidth, int tileWidth)
     {
         tiles = floorWidth / tileWidth;
+        //start of the floor
         reference_point = Point(-floorWidth / 2, -floorWidth / 2, 0);
         length = tileWidth;
     }
 
     virtual Color getColorAt(Point point)
     {
+
+        // x and y values...................
 
         int tileX = (point.x - reference_point.x) / length;
         int tileY = (point.y - reference_point.y) / length;
@@ -42,6 +45,7 @@ public:
 
     virtual Ray getNormalAt(Point point, Ray incidentRay)
     {
+        //floor normal is always z axis...................
         if (incidentRay.direction.z > 0)
             return Ray(point, Point(0, 0, 1));
         else
@@ -70,15 +74,19 @@ public:
             }
         }
     }
+    
+    
     string returnType()
     {
         return "floor";
     }
+    
     virtual double getIntersectingT(Ray ray, Color &color, int level)
     {
         Point normal = Point(0, 0, 1);
         double dotP = normal.dotProduct(ray.direction);
 
+        //normal on that plane...............................
         if (round(dotP * 100) == 0)
             return -1;
 
@@ -86,6 +94,8 @@ public:
 
         Point p = ray.origin.add(ray.direction.scalarMultiply(t));
 
+
+        // out of range!!!!!!!!!!!!!!!
         if (p.x <= reference_point.x || p.x >= abs(reference_point.x) && p.y <= reference_point.y && p.y >= abs(reference_point.y))
         {
             return -1;
