@@ -257,7 +257,7 @@ void display()
               camera.pos.x + camera.look.x, camera.pos.y + camera.look.y, camera.pos.z + camera.look.z,
               camera.up.x, camera.up.y, camera.up.z);
     // draw
-    glRotatef(camera.cameraRotation, 0, 0, 1);
+    //glRotatef(camera.cameraRotation, 0, 0, 1);
     glMatrixMode(GL_MODELVIEW);
 
     drawAxis();
@@ -413,7 +413,7 @@ int main(int argc, char **argv)
 
     glutInit(&argc, argv);
     glutInitWindowSize(500, 500);
-    glutInitWindowPosition(50, 50);
+    glutInitWindowPosition(100, 100);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
     glutCreateWindow("Ray Tracing");
 
