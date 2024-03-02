@@ -12,7 +12,7 @@ public:
     float cameraRotation = 45.0;
     Camera()
     {
-        pos = Point(200, 0, 10);
+        pos = Point(150, 150, 0);
         look = Point(-1 / sqrt(2), -1 / sqrt(2), 0);
         right = Point(-1 / sqrt(2), 1 / sqrt(2), 0);
         up = Point(0, 0, 1);
