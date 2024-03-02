@@ -129,7 +129,7 @@ public:
             {
 
                 // lambert value
-                double val = max(0.0, -lightRay.direction.dotProduct(normal.direction));
+                double lambert = max(0.0, -lightRay.direction.dotProduct(normal.direction));
 
                 // find reflected ray
                 Ray reflection = Ray(intersectionPoint, Reflection(normal.direction, lightRay.direction));
@@ -138,13 +138,13 @@ public:
                 // update diffuse and specular components
                 // lights[i]->color works as the source intensity, Is here
 
-                color.r += lights[i]->color.r * coefficients[1] * val * colorAtIntersection.r;
+                color.r += lights[i]->color.r * coefficients[1] * lambert * colorAtIntersection.r;
                 color.r += lights[i]->color.r * coefficients[2] * pow(phong, shine) * colorAtIntersection.r;
 
-                color.g += lights[i]->color.g * coefficients[1] * val * colorAtIntersection.g;
+                color.g += lights[i]->color.g * coefficients[1] * lambert * colorAtIntersection.g;
                 color.g += lights[i]->color.g * coefficients[2] * pow(phong, shine) * colorAtIntersection.g;
 
-                color.b += lights[i]->color.b * coefficients[1] * val * colorAtIntersection.b;
+                color.b += lights[i]->color.b * coefficients[1] * lambert * colorAtIntersection.b;
                 color.b += lights[i]->color.b * coefficients[2] * pow(phong, shine) * colorAtIntersection.b;
             }
         }
@@ -189,15 +189,15 @@ public:
                 {
 
                     double phong = max(0.0, -ray.direction.dotProduct(reflection.direction));
-                    double val = max(0.0, -lightRay.direction.dotProduct(normal.direction));
+                    double lambert = max(0.0, -lightRay.direction.dotProduct(normal.direction));
 
-                    color.r += spotlights[i]->light.color.r * coefficients[1] * val * colorAtIntersection.r;
+                    color.r += spotlights[i]->light.color.r * coefficients[1] * lambert * colorAtIntersection.r;
                     color.r += spotlights[i]->light.color.r * coefficients[2] * pow(phong, shine) * colorAtIntersection.r;
 
-                    color.g += spotlights[i]->light.color.g * coefficients[1] * val * colorAtIntersection.g;
+                    color.g += spotlights[i]->light.color.g * coefficients[1] * lambert * colorAtIntersection.g;
                     color.g += spotlights[i]->light.color.g * coefficients[2] * pow(phong, shine) * colorAtIntersection.g;
 
-                    color.b += spotlights[i]->light.color.b * coefficients[1] * val * colorAtIntersection.b;
+                    color.b += spotlights[i]->light.color.b * coefficients[1] * lambert * colorAtIntersection.b;
                     color.b += spotlights[i]->light.color.b * coefficients[2] * pow(phong, shine) * colorAtIntersection.b;
                 }
             }

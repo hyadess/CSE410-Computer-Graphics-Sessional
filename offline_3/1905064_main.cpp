@@ -121,13 +121,12 @@ void capture()
 
     double du = windowWidth / (imageWidth * 1.0);
     double dv = windowHeight / (imageHeight * 1.0);
+    int obIndex = -1;
+    double t, min_t;
 
     // topLeft = topLeft + (right * du / 2.0) - (up * dv / 2.0);
 
     topLeft = topLeft.add(camera.right.scalarMultiply(du / 2.0)).subtract(camera.up.scalarMultiply(dv / 2.0));
-
-    int nearestObjectIndex = -1;
-    double t, tMin;
 
     for (int i = 0; i < imageWidth; i++)
     {
@@ -141,38 +140,27 @@ void capture()
             Color color;
 
             // find nearest object
-            tMin = -1;
-            nearestObjectIndex = -1;
+            min_t = -1;
+            obIndex = -1;
             for (int k = 0; k < (int)objects.size(); k++)
             {
+
+                //0 means I only need the t value
                 t = objects[k]->intersect(ray, color, 0, objects, lights, spotlights, recursionLevel);
-                if (t > 0 && (nearestObjectIndex == -1 || t < tMin))
-                    tMin = t, nearestObjectIndex = k;
+                if (t > 0 && (obIndex == -1 || t < min_t))
+                    min_t = t, obIndex = k;
             }
 
             // if nearest object is found, then shade the pixel
-            if (nearestObjectIndex != -1)
+            if (obIndex != -1)
             {
 
                 color = Color(0, 0, 0);
 
-                double t = objects[nearestObjectIndex]->intersect(ray, color, 1, objects, lights, spotlights, recursionLevel);
+                double t = objects[obIndex]->intersect(ray, color, 1, objects, lights, spotlights, recursionLevel);
 
                 // normalize the color values...................
-                if (color.r > 1)
-                    color.r = 1;
-                if (color.g > 1)
-                    color.g = 1;
-                if (color.b > 1)
-                    color.b = 1;
-
-                if (color.r < 0)
-                    color.r = 0;
-                if (color.g < 0)
-                    color.g = 0;
-                if (color.b < 0)
-                    color.b = 0;
-
+                colorNormallize(color);
                 image.set_pixel(i, j, 255 * color.r, 255 * color.g, 255 * color.b);
             }
         }
@@ -183,7 +171,7 @@ void capture()
     cout << "Saving Image" << endl;
 }
 
-int numSegments = 50;
+int numSegments = 100;
 
 void initGL()
 {
@@ -320,49 +308,51 @@ void keyboardListener(unsigned char key, int x, int y)
     {
 
     case 'd':
-        camera.cameraRotation -= 5.0f;
+        // camera.cameraRotation -= 5.0f;
         break;
     case 'a':
-        camera.cameraRotation += 5.0f;
+        // camera.cameraRotation += 5.0f;
         break;
     case 'w':
-        camera.pos.z += v;
+        // camera.pos.z += v;
         break;
     case 's':
-        camera.pos.z -= v;
+        // camera.pos.z -= v;
         break;
     case '0':
         capture();
         break;
 
     case '1':
-        camera.right = camera.right.scalarMultiply(cos(rate)).add(camera.look.scalarMultiply(sin(rate)));
         camera.look = camera.look.scalarMultiply(cos(rate)).subtract(camera.right.scalarMultiply(sin(rate)));
+        camera.right = camera.right.scalarMultiply(cos(rate)).add(camera.look.scalarMultiply(sin(rate)));
+
         break;
 
     case '2':
-        camera.right = camera.right.scalarMultiply(cos(-rate)).add(camera.look.scalarMultiply(sin(-rate)));
         camera.look = camera.look.scalarMultiply(cos(-rate)).subtract(camera.right.scalarMultiply(sin(-rate)));
-        break;
+        camera.right = camera.right.scalarMultiply(cos(-rate)).add(camera.look.scalarMultiply(sin(-rate)));
 
-    case '3':
-        camera.look = camera.look.scalarMultiply(cos(rate)).add(camera.up.scalarMultiply(sin(rate)));
-        camera.up = camera.up.scalarMultiply(cos(rate)).subtract(camera.look.scalarMultiply(sin(rate)));
         break;
 
     case '4':
-        camera.look = camera.look.scalarMultiply(cos(-rate)).add(camera.up.scalarMultiply(sin(-rate)));
-        camera.up = camera.up.scalarMultiply(cos(-rate)).subtract(camera.look.scalarMultiply(sin(-rate)));
+        camera.look = camera.look.scalarMultiply(cos(rate)).subtract(camera.up.scalarMultiply(sin(rate)));
+        camera.up = camera.up.scalarMultiply(cos(rate)).add(camera.look.scalarMultiply(sin(rate)));
+        break;
+
+    case '3':
+        camera.look = camera.look.scalarMultiply(cos(-rate)).subtract(camera.up.scalarMultiply(sin(-rate)));
+        camera.up = camera.up.scalarMultiply(cos(-rate)).add(camera.look.scalarMultiply(sin(-rate)));
         break;
 
     case '5':
-        camera.up = camera.up.scalarMultiply(cos(rate)).add(camera.right.scalarMultiply(sin(rate)));
-        camera.right = camera.right.scalarMultiply(cos(rate)).subtract(camera.up.scalarMultiply(sin(rate)));
+        camera.up = camera.up.scalarMultiply(cos(rate)).subtract(camera.right.scalarMultiply(sin(rate)));
+        camera.right = camera.right.scalarMultiply(cos(rate)).add(camera.up.scalarMultiply(sin(rate)));
         break;
 
     case '6':
-        camera.up = camera.up.scalarMultiply(cos(-rate)).add(camera.right.scalarMultiply(sin(-rate)));
-        camera.right = camera.right.scalarMultiply(cos(-rate)).subtract(camera.up.scalarMultiply(sin(-rate)));
+        camera.up = camera.up.scalarMultiply(cos(-rate)).subtract(camera.right.scalarMultiply(sin(-rate)));
+        camera.right = camera.right.scalarMultiply(cos(-rate)).add(camera.up.scalarMultiply(sin(-rate)));
 
         break;
 
