@@ -29,7 +29,7 @@ public:
     
     virtual void draw()
     {
-        cout << "GeneralOb drawn" << endl;
+        //cout << "GeneralOb drawn" << endl;
     }
     
     virtual Ray getNormalAt(Point p, Ray incident)
